@@ -85,6 +85,7 @@ Conjunto::~Conjunto()
 {
   delete[] d;
   d = NULL;
+  size = 0;
 }
 
 bool Conjunto::Vazio() 
