@@ -1,0 +1,7 @@
+{
+  "fileName": "PDS2Q4.exe",
+  "binaries": [
+    "dist/main.o",
+    "dist/Conjunto.o"
+  ]
+}

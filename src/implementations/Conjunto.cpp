@@ -1,32 +1,45 @@
 #include "../interfaces/Conjunto.h"
+#include <cstddef>
 
 Conjunto::Conjunto()
 {
-  d = new double[size];
+  size = 0;
+  d = new double[1];
 }
 
 void Conjunto::Inserir(double k)
 {
-  if (!Pertence(k))
+  if (Vazio()) 
   {
-    double *novoConjunt = new double[size + 1];
-    for (int n = 0; n < size; n++)
+    d[0] = k;
+  } 
+  else
+  {
+    if (!Pertence(k))
     {
-      novoConjunt[n] = d[n];
+      double *novoConjunto = new double[size + 1];
+      for (int n = 0; n < size; n++)
+      {
+        novoConjunto[n] = d[n];
+      }
+      novoConjunto[size] = k;
+      d = novoConjunto;
     }
-    novoConjunt[size + 1] = k;
-    d = novoConjunt;
   }
+  size++;
 };
 
 bool Conjunto::Pertence(double k)
 {
   bool pertence = false;
-  for (int n = 0; n < size; n++)
+  if (!Vazio())
   {
-    if (d[n] == k)
+    for (int n = 0; n < size; n++)
     {
-      pertence = true;
+      if (d[n] == k)
+      {
+        pertence = true;
+      }
     }
   }
   return pertence;
@@ -34,17 +47,20 @@ bool Conjunto::Pertence(double k)
 
 void Conjunto::Remover(double k)
 {
-  for (int i = 0; i < size; i++)
+  if (!Vazio())
   {
-    if (d[i] == k)
+    for (int i = 0; i < size; i++)
     {
-      for (; i < size - 1; i++)
+      if (d[i] == k)
       {
-        d[i] = d[i + 1];
-      }
+        for (; i < size - 1; i++)
+        {
+          d[i] = d[i + 1];
+        }
 
-      d[size - 1] = 0;
-      size = size - 1;
+        d[size - 1] = 0;
+        size--;
+      }
     }
   }
 }
@@ -52,11 +68,14 @@ void Conjunto::Remover(double k)
 bool Conjunto::operator==(Conjunto &x)
 {
   bool igual = true;
-  for (int n = 0; n < size; n++)
+  if (Vazio() != x.Vazio())
   {
-    if (!x.Pertence(d[n]))
+    for (int n = 0; n < size; n++)
     {
-      igual = false;
+      if (!x.Pertence(d[n]))
+      {
+        igual = false;
+      }
     }
   }
   return igual;
@@ -65,4 +84,26 @@ bool Conjunto::operator==(Conjunto &x)
 Conjunto::~Conjunto()
 {
   delete[] d;
+  d = NULL;
+}
+
+bool Conjunto::Vazio() 
+{
+  return size == 0;
+}
+
+void Conjunto::Imprimir() 
+{
+  if (Vazio())
+  {
+    std::cout << "Vazio" << std::endl;
+  } 
+  else
+  {
+    std::cout << std::endl;
+    for (int n = 0; n < size; n++)
+    {
+      std::cout << d[n] << ", ";
+    }
+  }
 }
